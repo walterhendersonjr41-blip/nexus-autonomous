@@ -5,284 +5,141 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B1320">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="NEXUS">
-<title>NEXUS Autonomous</title>
+<meta name="description" content="NEXUS Autonomous Agent Ledger: one honest, private scorecard for every AI agent you run, from any company. Free, no account, no tracking.">
+<title>NEXUS Autonomous · Agent Ledger</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-  :root {
-    --bg: #0B1320;
-    --surface: #131D2E;
-    --surface-2: #1A2639;
-    --cyan: #00E5FF;
-    --orange: #FF6B35;
-    --purple: #A855F7;
-    --green: #22C55E;
-    --text: #F8FAFC;
-    --text-2: #94A3B8;
-    --border: rgba(255,255,255,0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
-    min-height: 100dvh;
-    padding: 16px;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.25rem;
-  }
-  .logo-mark {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-  }
-  .header-badges {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    color: var(--green);
-    background: rgba(34,197,94,0.1);
-    padding: 6px 12px;
-    border-radius: 999px;
-  }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--green);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--green);
-  }
-  .demo-tag {
-    font-size: 0.75rem;
-    color: var(--text-2);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    padding: 6px 12px;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-  .grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 900px) {
-    .grid { grid-template-columns: 1.4fr 1fr; }
-    .full { grid-column: 1 / -1; }
-  }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-  }
-  .metric-ring {
-    text-align: center;
-    padding: 24px 0;
-  }
-  .ring {
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 12px;
-    border-radius: 50%;
-    background: conic-gradient(var(--cyan) 0% 88%, var(--surface-2) 88% 100%);
-    display: grid;
-    place-items: center;
-    position: relative;
-    box-shadow: 0 0 40px rgba(0,229,255,0.25);
-  }
-  .ring::before {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    background: var(--surface);
-    border-radius: 50%;
-  }
-  .ring-value {
-    position: relative;
-    font-size: 2.4rem;
-    font-weight: 700;
-  }
-  .ring-label {
-    position: relative;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    color: var(--cyan);
-  }
-  .bars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 16px;
-  }
-  .bar-card {
-    background: var(--surface-2);
-    border-radius: 12px;
-    padding: 12px;
-    text-align: center;
-  }
-  .bar-card h4 { font-size: 0.75rem; color: var(--text-2); margin-bottom: 4px; }
-  .bar-card .val { font-size: 1.4rem; font-weight: 700; }
-  .agents {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .agent {
-    background: var(--surface-2);
-    border-radius: 12px;
-    padding: 14px;
-  }
-  .agent-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .agent-name { font-weight: 600; }
-  .progress {
-    height: 6px;
-    background: #1e293b;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--cyan), var(--purple));
-    border-radius: 3px;
-  }
-  .insights { margin-top: 8px; }
-  .insights li {
-    margin: 8px 0;
-    color: var(--text-2);
-    font-size: 0.9rem;
-    padding-left: 12px;
-    border-left: 2px solid var(--purple);
-  }
-  .action {
-    margin-top: 12px;
-    padding: 12px;
-    background: rgba(255,107,53,0.1);
-    border: 1px solid rgba(255,107,53,0.3);
-    border-radius: 10px;
-    color: var(--orange);
-    font-weight: 500;
-  }
-  .footer-note {
-    text-align: center;
-    margin-top: 32px;
-    color: var(--text-2);
-    font-size: 0.8rem;
-  }
-</style>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="header">
-    <div class="logo">
-      <div class="logo-mark">N</div>
-      NEXUS Autonomous
-    </div>
-    <div class="header-badges">
-      <div class="status">
-        <div class="status-dot"></div>
-        Live
-      </div>
-      <div class="demo-tag">Demo · sample data</div>
-    </div>
+    <div class="logo"><div class="logo-mark">N</div><div>NEXUS<small>Agent Ledger</small></div></div>
+    <div class="status" id="status"><div class="status-dot"></div><span>No data yet</span></div>
   </div>
 
   <div class="grid">
     <div class="card metric-ring">
-      <div class="ring">
-        <div>
-          <div class="ring-value">88%</div>
-          <div class="ring-label">ACCURACY</div>
-        </div>
+      <div class="ring" id="ring">
+        <div><div class="ring-value" id="ringValue">—</div><div class="ring-label">PROVEN DONE</div></div>
       </div>
+      <p class="ring-sub" id="ringSub">Share of all logged actions that succeeded <i>and</i> came with proof.</p>
       <div class="bars">
-        <div class="bar-card">
-          <h4>SPEED</h4>
-          <div class="val" style="color:var(--purple)">72%</div>
-        </div>
-        <div class="bar-card">
-          <h4>CREATIVITY</h4>
-          <div class="val" style="color:var(--orange)">65%</div>
-        </div>
-        <div class="bar-card">
-          <h4>HEALTH</h4>
-          <div class="val" style="color:var(--green)">OK</div>
-        </div>
+        <div class="bar-card"><h4>SUCCESS</h4><div class="val" id="vSuccess" style="color:var(--purple)">—</div></div>
+        <div class="bar-card"><h4>HANDS-FREE</h4><div class="val" id="vHands" style="color:var(--orange)">—</div></div>
+        <div class="bar-card"><h4>SPEND</h4><div class="val" id="vSpend" style="color:var(--green)">—</div></div>
       </div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:16px; font-size:1rem;">Active Agents</h3>
-      <div class="agents">
-        <div class="agent">
-          <div class="agent-header">
-            <span class="agent-name">Ops Monitor</span>
-            <span style="color:var(--cyan); font-size:0.85rem;">94%</span>
-          </div>
-          <div class="progress"><div class="progress-fill" style="width:94%"></div></div>
+      <h3>Your Agents <span class="muted" id="agentCount"></span></h3>
+      <div class="agents" id="agents"></div>
+    </div>
+
+    <div class="card full" id="alertsCard" hidden>
+      <h3>Drift alerts</h3>
+      <ul class="alerts" id="alerts"></ul>
+    </div>
+
+    <div class="card full">
+      <h3>Today's Insights</h3>
+      <ul class="insights" id="insights"></ul>
+      <div class="action" id="action" hidden></div>
+    </div>
+
+    <div class="card full" id="addCard">
+      <h3>Add what your agents did</h3>
+      <div class="tabs" role="tablist">
+        <button class="tab on" data-tab="quick">Quick log</button>
+        <button class="tab" data-tab="paste">Paste</button>
+        <button class="tab" data-tab="file">File</button>
+      </div>
+
+      <form class="pane" id="pane-quick">
+        <label>Agent <input id="qAgent" list="agentList" required maxlength="60" placeholder="e.g. Grok Bot, ChatGPT, my Cursor bot"></label>
+        <datalist id="agentList"></datalist>
+        <label>What it did <input id="qAction" maxlength="300" placeholder="e.g. sent the rent reminder email"></label>
+        <div class="seg" id="qOutcome">
+          <button type="button" data-v="success" class="on">Done</button>
+          <button type="button" data-v="partial">Partly</button>
+          <button type="button" data-v="fail">Failed</button>
+          <button type="button" data-v="unknown">Not sure</button>
         </div>
-        <div class="agent">
-          <div class="agent-header">
-            <span class="agent-name">Insight Engine</span>
-            <span style="color:var(--cyan); font-size:0.85rem;">81%</span>
-          </div>
-          <div class="progress"><div class="progress-fill" style="width:81%"></div></div>
+        <label>Proof (link, receipt # or where to look) <input id="qProof" maxlength="500" placeholder="optional, but it's what makes the score honest"></label>
+        <div class="row">
+          <label>Cost $ <input id="qCost" inputmode="decimal" placeholder="0"></label>
+          <label class="check"><input type="checkbox" id="qHuman"> I had to step in</label>
         </div>
-        <div class="agent">
-          <div class="agent-header">
-            <span class="agent-name">Action Router</span>
-            <span style="color:var(--cyan); font-size:0.85rem;">67%</span>
-          </div>
-          <div class="progress"><div class="progress-fill" style="width:67%"></div></div>
+        <button class="primary" type="submit">Log it</button>
+      </form>
+
+      <div class="pane" id="pane-paste" hidden>
+        <p class="hint">Paste anything: a bot's chat summary, a CSV, JSON or JSONL log. One action per line works best, like<br><code>Ops Monitor: sent invoice email, done https://… $0.02</code><br>or <code>2026-11-24 09:10 | Action Router | posted reply | failed</code></p>
+        <textarea id="pasteBox" rows="7" placeholder="Paste logs or messages here"></textarea>
+        <label>If a line doesn't name an agent, use <input id="pasteAgent" maxlength="60" placeholder="agent name (optional)"></label>
+        <div class="row wrap">
+          <button class="primary" id="pasteGo">Read it</button>
+          <button class="ghost" id="aiGo" title="Uses your own AI key">Clean up with my AI key</button>
         </div>
+        <p class="hint" id="pasteMsg"></p>
+      </div>
+
+      <div class="pane" id="pane-file" hidden>
+        <p class="hint">Open a .csv, .json, .jsonl or .txt export. Columns it understands: time, agent, vendor, action, outcome/status, proof, cost, human. Nothing is uploaded; the file is read on this phone.</p>
+        <input type="file" id="fileIn" accept=".csv,.tsv,.json,.jsonl,.txt,.log,text/*,application/json">
+        <p class="hint" id="fileMsg"></p>
       </div>
     </div>
 
     <div class="card full">
-      <h3 style="margin-bottom:12px;">Today’s Insights</h3>
-      <ul class="insights">
-        <li>Two tasks stalled overnight — consolidating ownership will clear the queue.</li>
-        <li>Manual checks can be replaced with a single morning routine.</li>
-        <li>Two items waiting on your reply since Sunday.</li>
+      <h3>Kill switch</h3>
+      <p class="hint">NEXUS can't reach inside other companies' apps, so no app honestly can stop all your bots with one tap. What this does: marks every agent paused, opens your saved off-switch links one by one, and <b>flags any agent that keeps logging work after you paused it.</b></p>
+      <div class="row wrap">
+        <button class="danger" id="pauseAll">Pause every agent</button>
+        <button class="ghost" id="resumeAll">Resume all</button>
+      </div>
+      <ul class="stoplist" id="stoplist"></ul>
+    </div>
+
+    <div class="card full">
+      <h3>Your data</h3>
+      <p class="hint">Everything stays in this browser on this device. No account, no server, no tracking. Back it up before clearing your browser.</p>
+      <div class="row wrap">
+        <button class="ghost" id="exportCsv">Export CSV</button>
+        <button class="ghost" id="backup">Backup (JSON)</button>
+        <button class="ghost warn" id="clearAll">Delete everything</button>
+      </div>
+      <details class="settings">
+        <summary>Optional: your own AI key (for "Clean up with my AI key")</summary>
+        <p class="hint">Only needed to turn messy text into clean entries. Works with any OpenAI-compatible service, including free tiers (e.g. Groq, OpenRouter free models). The key is saved only in this browser and sent only to the address below, together with the text you paste, when you press the button.</p>
+        <label>API address <input id="aiBase" placeholder="https://api.groq.com/openai/v1"></label>
+        <label>Model <input id="aiModel" placeholder="llama-3.1-8b-instant"></label>
+        <label>Key <input id="aiKey" type="password" autocomplete="off" placeholder="paste your key"></label>
+        <div class="row"><button class="ghost" id="aiSave">Save</button><button class="ghost warn" id="aiForget">Forget key</button></div>
+      </details>
+    </div>
+
+    <div class="card full how">
+      <h3>How the scores work</h3>
+      <ul>
+        <li><b>Proven done</b>: actions marked done that have proof attached, out of all actions.</li>
+        <li><b>Trust score</b> per agent (0–100): proven done = full credit, done without proof = half, partly done = quarter, failed or unclear = zero. Under 5 actions it says "too early to tell".</li>
+        <li><b>Hands-free</b>: share of actions that didn't need you to step in.</li>
+        <li><b>Drift</b>: the last 7 days compared with the 21 days before. Alerts if success drops 20+ points, you have to step in 20+ points more, cost per job doubles, or an agent goes quiet.</li>
+        <li>No number is ever invented. Empty means no data.</li>
       </ul>
-      <div class="action">Suggested action: Clear the 2 waiting tasks (~5 min)</div>
     </div>
   </div>
 
   <div class="footer-note">
-    NEXUS Autonomous · Self-running multi-agent operations<br>
-    Install this page to your home screen for quick access.
+    NEXUS Autonomous · One honest record for every AI agent you run, from any company<br>
+    Install this page to your home screen: Share → Add to Home Screen (iPhone) or ⋮ → Install app (Android).<br>
+    Made by Walt Henderson Jr · Free · Private by design
   </div>
+  <div class="toast" id="toast" hidden></div>
+<script src="core.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
