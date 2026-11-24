@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NEXUS">
+<title>NEXUS Autonomous</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg: #0B1320;
+    --surface: #131D2E;
+    --surface-2: #1A2639;
+    --cyan: #00E5FF;
+    --orange: #FF6B35;
+    --purple: #A855F7;
+    --green: #22C55E;
+    --text: #F8FAFC;
+    --text-2: #94A3B8;
+    --border: rgba(255,255,255,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    min-height: 100dvh;
+    padding: 16px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+  }
+  .header-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--green);
+    background: rgba(34,197,94,0.1);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green);
+  }
+  .demo-tag {
+    font-size: 0.75rem;
+    color: var(--text-2);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 1.4fr 1fr; }
+    .full { grid-column: 1 / -1; }
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .metric-ring {
+    text-align: center;
+    padding: 24px 0;
+  }
+  .ring {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: conic-gradient(var(--cyan) 0% 88%, var(--surface-2) 88% 100%);
+    display: grid;
+    place-items: center;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,229,255,0.25);
+  }
+  .ring::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    background: var(--surface);
+    border-radius: 50%;
+  }
+  .ring-value {
+    position: relative;
+    font-size: 2.4rem;
+    font-weight: 700;
+  }
+  .ring-label {
+    position: relative;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--cyan);
+  }
+  .bars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .bar-card {
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+  .bar-card h4 { font-size: 0.75rem; color: var(--text-2); margin-bottom: 4px; }
+  .bar-card .val { font-size: 1.4rem; font-weight: 700; }
+  .agents {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .agent {
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .agent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .agent-name { font-weight: 600; }
+  .progress {
+    height: 6px;
+    background: #1e293b;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    border-radius: 3px;
+  }
+  .insights { margin-top: 8px; }
+  .insights li {
+    margin: 8px 0;
+    color: var(--text-2);
+    font-size: 0.9rem;
+    padding-left: 12px;
+    border-left: 2px solid var(--purple);
+  }
+  .action {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 10px;
+    color: var(--orange);
+    font-weight: 500;
+  }
+  .footer-note {
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-2);
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-mark">N</div>
+      NEXUS Autonomous
+    </div>
+    <div class="header-badges">
+      <div class="status">
+        <div class="status-dot"></div>
+        Live
+      </div>
+      <div class="demo-tag">Demo · sample data</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card metric-ring">
+      <div class="ring">
+        <div>
+          <div class="ring-value">88%</div>
+          <div class="ring-label">ACCURACY</div>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="bar-card">
+          <h4>SPEED</h4>
+          <div class="val" style="color:var(--purple)">72%</div>
+        </div>
+        <div class="bar-card">
+          <h4>CREATIVITY</h4>
+          <div class="val" style="color:var(--orange)">65%</div>
+        </div>
+        <div class="bar-card">
+          <h4>HEALTH</h4>
+          <div class="val" style="color:var(--green)">OK</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px; font-size:1rem;">Active Agents</h3>
+      <div class="agents">
+        <div class="agent">
+          <div class="agent-header">
+            <span class="agent-name">Ops Monitor</span>
+            <span style="color:var(--cyan); font-size:0.85rem;">94%</span>
+          </div>
+          <div class="progress"><div class="progress-fill" style="width:94%"></div></div>
+        </div>
+        <div class="agent">
+          <div class="agent-header">
+            <span class="agent-name">Insight Engine</span>
+            <span style="color:var(--cyan); font-size:0.85rem;">81%</span>
+          </div>
+          <div class="progress"><div class="progress-fill" style="width:81%"></div></div>
+        </div>
+        <div class="agent">
+          <div class="agent-header">
+            <span class="agent-name">Action Router</span>
+            <span style="color:var(--cyan); font-size:0.85rem;">67%</span>
+          </div>
+          <div class="progress"><div class="progress-fill" style="width:67%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card full">
+      <h3 style="margin-bottom:12px;">Today’s Insights</h3>
+      <ul class="insights">
+        <li>Two tasks stalled overnight — consolidating ownership will clear the queue.</li>
+        <li>Manual checks can be replaced with a single morning routine.</li>
+        <li>Two items waiting on your reply since Sunday.</li>
+      </ul>
+      <div class="action">Suggested action: Clear the 2 waiting tasks (~5 min)</div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    NEXUS Autonomous · Self-running multi-agent operations<br>
+    Install this page to your home screen for quick access.
+  </div>
+</body>
+</html>
